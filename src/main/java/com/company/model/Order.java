@@ -1,15 +1,12 @@
 package com.company.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
-import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -45,7 +42,7 @@ public class Order extends BaseEntity
 //	//@JoinColumn(name = "id")
 //	private GeneralSequenceNumber userId = new GeneralSequenceNumber();
 
-	@NonNull
+	//@NonNull
 	private ProdStatus status;
 
 
@@ -59,14 +56,14 @@ public class Order extends BaseEntity
 		//this.userId4 = userId4;
 	}
 
-	@Column(name = "user_qqQ")
-	int userQqq;
+	//@Column(name = "user_Qqq3")
+	int userId;
 
 
-	@OneToMany(mappedBy = "order_id"
+	@OneToMany(//mappedBy = "orderId"
 			//fetch = FetchType.LAZY
 	)
-//	@JoinColumn(name = "order_id2", referencedColumnName = "id")
+	@JoinColumn(name = "order_id", referencedColumnName = "id")
 //	@JoinColumn(name = "order_id2", referencedColumnName = "userId")
 
 //	@JoinColumns({
@@ -107,6 +104,21 @@ public class Order extends BaseEntity
 //				       ", modified=" + modified +
 //				       '}';
 //	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Order order1 = (Order) o;
+		return id == order1.id && Objects.equals(status, order1.status);
+				//&& status == order1.status;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, status);
+	}
+
 }
 
 

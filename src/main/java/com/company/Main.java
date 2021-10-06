@@ -1,9 +1,6 @@
 package com.company;
 
-import com.company.model.Order;
-import com.company.model.OrderItems;
-import com.company.model.ProdStatus;
-import com.company.model.Product;
+import com.company.model.*;
 import com.company.repo.OrdersRepo;
 import com.company.repo.ProdRepo;
 import org.slf4j.Logger;
@@ -15,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+// https://github.com/maxanarki2/JoinTableTest
 
 @SpringBootApplication
 public class Main {
@@ -39,16 +38,21 @@ public class Main {
         Order order = new Order(ProdStatus.IN_STOCK);
         ordersRepo.save(order);
 
+        Order order2 = new Order(ProdStatus.IN_STOCK);
+        ordersRepo.save(order2);
+
         Product prod1 = new Product("Prod1", 100, ProdStatus.IN_STOCK);
         prodRepo.save(prod1);
 
         Product prod2 = new Product("Prod2", 200, ProdStatus.IN_STOCK);
         prodRepo.save(prod2);
 
-        OrderItems orderItems = new OrderItems(order.getId(), prod1.getId(), 10);
-        OrderItems orderItems2 = new OrderItems(order.getId(), prod2.getId(), 20);
+        OrderItems orderItems = new OrderItems(prod1, order, 10);
+        OrderItems orderItems2 = new OrderItems(prod2, order, 20);
+        OrderItems orderItems21 = new OrderItems(prod2, order2, 50);
         entityManager.persist(orderItems);
         entityManager.persist(orderItems2);
+        entityManager.persist(orderItems21);
 
 
 //        select o, ps.size, SUM(ps.quantity), SUM (p.price)

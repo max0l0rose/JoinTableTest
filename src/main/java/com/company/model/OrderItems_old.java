@@ -21,17 +21,17 @@ import java.io.Serializable;
 //@Getter
 //@Setter
 //@SequenceGenerator(name = "sequenceGen", sequenceName = "seqDepart", allocationSize = 1)
-@Table(name = "order_items")
-public class OrderItems implements Serializable
+@Table
+public class OrderItems_old implements Serializable
 		//extends BaseEntity
 {
 	//public final static String[][] headers = {{"Id", "user_id", "Status", "Created", "Modified" },};
 
 	@Id
-	private long order_id;
+	private long orderId;
 
 	@Id
-	private long product_id;
+	private long productId;
 
 	private int quantity;
 

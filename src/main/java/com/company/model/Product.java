@@ -1,6 +1,5 @@
 package com.company.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -48,10 +47,10 @@ public class Product extends BaseEntity //implements StringsArray
 	//private int userId4;
 
 
-	@OneToMany(mappedBy = "product_id"
+	@OneToMany(//mappedBy = "productId"
 			//fetch = FetchType.LAZY
 	)
-//	@JoinColumn(name = "order_id")
+	@JoinColumn(name = "product_id", referencedColumnName = "id")
 //	@JoinTable(name = "order_items",
 //			joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
 //			inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
