@@ -3,6 +3,10 @@ package com.company.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.List;
@@ -43,7 +47,7 @@ public class Order extends BaseEntity
 //	private GeneralSequenceNumber userId = new GeneralSequenceNumber();
 
 	//@NonNull
-	private ProdStatus status;
+	private ProdStatus status = ProdStatus.IN_STOCK;
 
 
 //	public Order(ProdStatus status) {
@@ -56,9 +60,25 @@ public class Order extends BaseEntity
 		//this.userId4 = userId4;
 	}
 
-	//@Column(name = "user_Qqq3")
-	int userId;
+	@PrePersist
+	public void ini() {
+		userId = 5;
+	}
 
+	@PreUpdate
+	public void ini2() {
+		userId = 6;
+	}
+
+	//@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+	//@GenericGenerator(name = "native", strategy = "native")
+//	@Generated(GenerationTime.INSERT)
+//	@Column(name = "uid", columnDefinition = "integer default 0",
+//			updatable = false, nullable = false, insertable = false)
+	int userId = 3;
+
+	@OneToOne
+	private GeneralSequenceNumber myVal;
 
 	@OneToMany(//mappedBy = "orderId"
 			//fetch = FetchType.LAZY
@@ -121,4 +141,23 @@ public class Order extends BaseEntity
 
 }
 
+
+
+
+//@RepositoryEventHandler
+//@Component
+//public class PersonEventHandler {
+//
+//	@PersistenceContext
+//	private EntityManager entityManager;
+//
+//	@HandleBeforeSave
+//	public void handlePersonSave(Person newPerson) {
+//		entityManager.detach(newPerson);
+//		Person currentPerson = personRepository.findOne(newPerson.getId());
+//		if (!newPerson.getName().equals(currentPerson.getName)) {
+//			//react on name change
+//		}
+//	}
+//}
 

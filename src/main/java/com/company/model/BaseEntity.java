@@ -23,11 +23,15 @@ public abstract class BaseEntity //implements StringsArray
 //			sequenceName = "MY_ORACLE_SEQ_NAME",
 //			allocationSize = 1)
 
-	//@Column(name="ID")
+	@Column(name="id", nullable = false, updatable = false, insertable = false)
 	long id;
 
-	@Column(columnDefinition = "integer default 0")
-	int version;
+	//@Column(columnDefinition = "integer default 0")
+	@Version
+	private int version = 0;
+	//Does it mean that we should declare our version field as final
+	//No but you could consider making the setter protected as you're not supposed to call it.
+
 
 	//@Temporal(TemporalType.TIMESTAMP) // ERROR
 	@Column(name = "created_at", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP",
@@ -35,6 +39,7 @@ public abstract class BaseEntity //implements StringsArray
 	//@CreationTimestamp // hibernate
 	//@Transient
 	Instant created;
+
 
 	//@Generated(GenerationTime.INSERT)
 	//@Column(name = "column_name", insertable = false)
