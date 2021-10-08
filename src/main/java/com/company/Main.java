@@ -3,6 +3,7 @@ package com.company;
 import com.company.model.*;
 import com.company.repo.OrdersRepo;
 import com.company.repo.ProdRepo;
+import com.company.services.OrdersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,34 +25,58 @@ public class Main {
     static OrdersRepo ordersRepo1;
 
 
-    //CommandLineRunner
     @Bean
-    @Transactional
-    public boolean demo(ProdRepo prodRepo,
-                        OrdersRepo ordersRepo
-                        , EntityManager entityManager
+    @Transactional(value = Transactional.TxType.REQUIRED)
+    public boolean demo1(ProdRepo prodRepo,
+                        OrdersService ordersService
+            , EntityManager entityManager
     ) {
         //return (args) ->
         //{
-        log.info("demo: ");
+        log.info("demo1: ");
+
+        prodRepo.save(prod2);
+
+        GeneralSequenceNumber n = new GeneralSequenceNumber();
+        entityManager.persist(n);
+        GeneralSequenceNumber n2 = new GeneralSequenceNumber();
+        entityManager.persist(n2);
 
         Order order = new Order(ProdStatus.IN_STOCK);
-        ordersRepo.save(order);
-
-        Order order2 = new Order(ProdStatus.IN_STOCK);
-        ordersRepo.save(order2);
+        ordersService.save(order);
 
         Product prod1 = new Product("Prod1", 100, ProdStatus.IN_STOCK);
         prodRepo.save(prod1);
 
-        Product prod2 = new Product("Prod2", 200, ProdStatus.IN_STOCK);
-        prodRepo.save(prod2);
-
         OrderItems orderItems = new OrderItems(prod1, order, 10);
-        OrderItems orderItems2 = new OrderItems(prod2, order, 20);
-        OrderItems orderItems21 = new OrderItems(prod2, order2, 50);
         entityManager.persist(orderItems);
+        OrderItems orderItems2 = new OrderItems(prod2, order, 20);
         entityManager.persist(orderItems2);
+
+        log.info("demo1: Ok");
+        return true;
+    }
+
+
+    Product prod2 = new Product("Prod2", 200, ProdStatus.IN_STOCK);
+
+    //CommandLineRunner
+    @Bean
+    @Transactional(value = Transactional.TxType.REQUIRED)
+    public boolean demo2(ProdRepo prodRepo,
+                        OrdersService ordersService
+                        , EntityManager entityManager
+    ) {
+        //return (args) ->
+        //{
+        log.info("demo2: ");
+
+        Order order2 = new Order(ProdStatus.IN_STOCK);
+        ordersService.save(order2);
+
+        ordersService.save(new Order());
+
+        OrderItems orderItems21 = new OrderItems(prod2, order2, 50);
         entityManager.persist(orderItems21);
 
 
@@ -63,7 +88,7 @@ public class Main {
 
 
 
-		log.info("demo: Ok");
+		log.info("demo2: Ok");
         //};
         return  true;
     }

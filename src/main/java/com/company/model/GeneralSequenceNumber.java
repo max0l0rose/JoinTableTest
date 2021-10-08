@@ -14,5 +14,7 @@ public class GeneralSequenceNumber {
 //			columnDefinition = "bigint default 2"
 //			,updatable = false, insertable = false
 //	)
-	private Long id = 1L;
+	private Long uId = 1L;
+
+	private String name1 = "name1";
 }

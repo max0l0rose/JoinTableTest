@@ -33,7 +33,7 @@ public class MyTest {
 		Order order = new Order(ProdStatus.IN_STOCK);
 		ordersRepo.save(order);
 
-		order.setUserId(10);
+		//order.setUserId(10);
 
 		ordersRepo.save(order);
 

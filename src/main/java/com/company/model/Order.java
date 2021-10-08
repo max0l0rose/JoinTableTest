@@ -3,16 +3,22 @@ package com.company.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@EntityListeners(AuditTrailListener.class)
 @Data
 //@AllArgsConstructor
 @NoArgsConstructor
@@ -60,25 +66,39 @@ public class Order extends BaseEntity
 		//this.userId4 = userId4;
 	}
 
-	@PrePersist
-	public void ini() {
-		userId = 5;
-	}
+//	@PrePersist
+//	public void ini(
+//			//EntityManager entityManager // error
+//	) {
+////		EntityManagerFactory emFactory = Persistence.createEntityManagerFactory("default");
+////		EntityManager em = emFactory.createEntityManager();
+//
+//		userId = 5;
+//	}
+//
+//	@PreUpdate
+//	public void ini2() {
+//		userId = 6;
+//	}
 
-	@PreUpdate
-	public void ini2() {
-		userId = 6;
-	}
+
 
 	//@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	//@GenericGenerator(name = "native", strategy = "native")
+
 //	@Generated(GenerationTime.INSERT)
 //	@Column(name = "uid", columnDefinition = "integer default 0",
 //			updatable = false, nullable = false, insertable = false)
-	int userId = 3;
 
-	@OneToOne
-	private GeneralSequenceNumber myVal;
+//	//@OneToOne
+//	//@MapsId("uId")
+//	////@JoinColumn(name = "id", referencedColumnName = "user_id", nullable = false)
+//	@Generated(GenerationTime.ALWAYS)
+//	@Column(insertable = false, updatable = false)
+	//@Query("SELECT next_val FROM seq_orders")
+	long userId;// = new GeneralSequenceNumber();
+
+
 
 	@OneToMany(//mappedBy = "orderId"
 			//fetch = FetchType.LAZY
@@ -161,3 +181,37 @@ public class Order extends BaseEntity
 //	}
 //}
 
+class AuditTrailListener {
+	private static Log log = LogFactory.getLog(AuditTrailListener.class);
+
+//	public AuditTrailListener(EntityManager em) {
+//		this.em = em;
+//	}
+//
+//	//@Autowired
+//	EntityManager em;
+
+	@PrePersist
+	@PreUpdate
+	@PreRemove
+	private void beforeAnyUpdate(Order order) // 1 param!
+	{
+		if (order.getId() == 0) {
+			log.info("[AUDIT] About to add a user");
+		} else {
+			log.info("[AUDIT] About to update/delete user: " + order.getId());
+		}
+	}
+
+	@PostPersist
+	@PostUpdate
+	@PostRemove
+	private void afterAnyUpdate(Order order) {
+		log.info("[AUDIT] add/update/delete complete for user: " + order.getId());
+	}
+
+	@PostLoad
+	private void afterLoad(Order order) {
+		log.info("[AUDIT] user loaded from database: " + order.getId());
+	}
+}
