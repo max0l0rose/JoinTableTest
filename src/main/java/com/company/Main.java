@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 
 // https://github.com/maxanarki2/JoinTableTest
 
@@ -26,7 +28,10 @@ public class Main {
 
 
     @Bean
-    @Transactional(value = Transactional.TxType.REQUIRED)
+    @Transactional(
+            //propagation = Propagation.REQUIRED,
+            //isolation = Isolation.READ_UNCOMMITTED
+    )
     public boolean demo1(ProdRepo prodRepo,
                         OrdersService ordersService
             , EntityManager entityManager
@@ -37,10 +42,10 @@ public class Main {
 
         prodRepo.save(prod2);
 
-        GeneralSequenceNumber n = new GeneralSequenceNumber();
-        entityManager.persist(n);
-        GeneralSequenceNumber n2 = new GeneralSequenceNumber();
-        entityManager.persist(n2);
+//        GeneralSequenceNumber n = new GeneralSequenceNumber();
+//        entityManager.persist(n);
+////        GeneralSequenceNumber n2 = new GeneralSequenceNumber();
+////        entityManager.persist(n2);
 
         Order order = new Order(ProdStatus.IN_STOCK);
         ordersService.save(order);
@@ -53,6 +58,16 @@ public class Main {
         OrderItems orderItems2 = new OrderItems(prod2, order, 20);
         entityManager.persist(orderItems2);
 
+        Order order2 = new Order(ProdStatus.IN_STOCK);
+        ordersService.save(order2);
+
+        ordersService.save(new Order());
+
+        OrderItems orderItems21 = new OrderItems(prod2, order2, 50);
+        entityManager.persist(orderItems21);
+
+        ordersService.save(new Order());
+
         log.info("demo1: Ok");
         return true;
     }
@@ -62,7 +77,7 @@ public class Main {
 
     //CommandLineRunner
     @Bean
-    @Transactional(value = Transactional.TxType.REQUIRED)
+    @Transactional()
     public boolean demo2(ProdRepo prodRepo,
                         OrdersService ordersService
                         , EntityManager entityManager
@@ -70,15 +85,6 @@ public class Main {
         //return (args) ->
         //{
         log.info("demo2: ");
-
-        Order order2 = new Order(ProdStatus.IN_STOCK);
-        ordersService.save(order2);
-
-        ordersService.save(new Order());
-
-        OrderItems orderItems21 = new OrderItems(prod2, order2, 50);
-        entityManager.persist(orderItems21);
-
 
 //        select o, ps.size, SUM(ps.quantity), SUM (p.price)
 //        from Order o

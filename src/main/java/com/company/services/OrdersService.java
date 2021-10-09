@@ -2,29 +2,31 @@ package com.company.services;
 
 import com.company.model.GeneralSequenceNumber;
 import com.company.model.Order;
+import com.company.repo.GeneralSequenceNumberRepo;
 import com.company.repo.OrdersRepo;
-import org.hibernate.CacheMode;
-import org.hibernate.jpa.QueryHints;
+import com.sun.org.apache.xml.internal.serialize.LineSeparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class OrdersService implements MyService<Order>{
 
-	@Autowired
+	//@Autowired
+	@PersistenceContext
 	EntityManager entityManager;
 
 
 	@Autowired
 	private OrdersRepo ordersRepo;
 
+	@Autowired
+	private GeneralSequenceNumberRepo genSeqNumRepo;
 
 //	{
 //		return ordersRepo.findAll();
@@ -46,38 +48,65 @@ public class OrdersService implements MyService<Order>{
 //		return depsRepo.findByDepName(name);
 //	}
 
-	@Transactional
-	long getNextUserId() {
-//		TypedQuery<SimpleEntity> q =
-//				em.createQuery("select t from SimpleEntity t", SimpleEntity.class);
-//		EntityTransaction et = entityManager.getTransaction();
-//		et.begin();
 
+////	@Transactional(
+////			//isolation = Isolation.READ_UNCOMMITTED
+////			propagation = Propagation.REQUIRES_NEW
+////	)
+//	GeneralSequenceNumber getNextUserId() {
+////		TypedQuery<SimpleEntity> q =
+////				em.createQuery("select t from SimpleEntity t", SimpleEntity.class);
+////		EntityTransaction et = entityManager.getTransaction();
+////		et.begin();
+//
+//
+//		Query query1 = entityManager.createQuery("SELECT g FROM GeneralSequenceNumber g");
+//		GeneralSequenceNumber number = (GeneralSequenceNumber)query1.getResultList().get(0);
+//		entityManager.detach(number);
+//
+//		Query query2 = entityManager.createQuery("DELETE FROM GeneralSequenceNumber");
+//		query2.executeUpdate();
+////
+////////		Query query3 = entityManager.createQuery("INSERT INTO general_sequence_number (u_id) VALUES (?)");
+////////		r = r.add(BigInteger.ONE);
+////////		query3.setParameter(1, r.intValue());
+////////		query3.executeUpdate();
+////
+////		GeneralSequenceNumber number2 = new GeneralSequenceNumber();
+////		number2.setVal(number.getVal() + 1);
+////		entityManager.persist(number2);
+//		//		et.commit();
+//
+//		//Query query3 = entityManager.createQuery("SELECT g.uId FROM GeneralSequenceNumber g");
+//		//entityManager.lock(GeneralSequenceNumber.class, LockModeType.OPTIMISTIC);
+//		//query.setLockMode(LockModeType.OPTIMISTIC);
+//		//query.setHint(QueryHints.HINT_CACHE_MODE, CacheMode.IGNORE);
+//		//long res = (long) query3.getResultList().get(0);
+//
+//		return number;
+//	}
 
-		Query query1 = entityManager.createNativeQuery("SELECT MAX(u_id) FROM general_sequence_number");
-		BigInteger r = (BigInteger) query1.getResultList().get(0);
-		r = r.add(BigInteger.ONE);
-
-		Query query2 = entityManager.createNativeQuery("DELETE FROM general_sequence_number");
-		query2.executeUpdate();
-
-		Query query3 = entityManager.createNativeQuery("INSERT INTO general_sequence_number (u_id) VALUES (?)");
-		query3.setParameter(1, r.intValue());
-		query3.executeUpdate();
-
-		//		et.commit();
-
-		Query query = entityManager.createQuery("SELECT g.uId FROM GeneralSequenceNumber g");
-		//entityManager.lock(GeneralSequenceNumber.class, LockModeType.OPTIMISTIC);
-		//query.setLockMode(LockModeType.OPTIMISTIC);
-		//query.setHint(QueryHints.HINT_CACHE_MODE, CacheMode.IGNORE);
-		long res = (long) query.getResultList().get(0);
-		return res;
-	}
 
 	public Order save(Order order) {
-		long userId = getNextUserId();
-		order.setUserId(userId);
+		//GeneralSequenceNumber number = getNextUserId();
+		List<GeneralSequenceNumber> seqList = genSeqNumRepo.findAll();
+		//GeneralSequenceNumber number = seqList.size()>0 ? (GeneralSequenceNumber)seqList.get(0) : new GeneralSequenceNumber();//findFirstByOrderByVal();
+		GeneralSequenceNumber number = seqList.stream().findFirst().orElseGet(() -> {
+			GeneralSequenceNumber num = new GeneralSequenceNumber();
+			genSeqNumRepo.save(num);
+			return num;
+		});//findFirstByOrderByVal();
+		order.setUserId(number.getUId());
+		//boolean contains = entityManager.contains(number);
+
+		genSeqNumRepo.deleteAll();
+		GeneralSequenceNumber number2 = new GeneralSequenceNumber();
+		//number2.setVal(number.getVal() + 1);
+		genSeqNumRepo.save(number2);
+
+//		//GeneralSequenceNumber number3 = genSeqNumRepo.findFirstByOrderByVal(); // getNextUserId();
+//		//boolean contains2 = entityManager.contains(number);
+
 		return ordersRepo.save(order);
 	}
 

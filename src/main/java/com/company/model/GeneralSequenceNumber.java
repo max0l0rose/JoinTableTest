@@ -16,5 +16,7 @@ public class GeneralSequenceNumber {
 //	)
 	private Long uId = 1L;
 
-	private String name1 = "name1";
+	//int val;
+
+	//private String name1 = "name1";
 }
