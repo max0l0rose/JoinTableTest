@@ -47,15 +47,15 @@ public class Product extends BaseEntity //implements StringsArray
 	//private int userId4;
 
 
-	@OneToMany(//mappedBy = "productId"
+	@OneToMany(mappedBy = "product"
 			//fetch = FetchType.LAZY
 	)
-	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	//@JoinColumn(name = "product_id", referencedColumnName = "id")
 //	@JoinTable(name = "order_items",
 //			joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
 //			inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
 //	)
-	private List<OrderItems> orders;// = new HashSet<OrderItems>();;
+	private List<OrderItems> orderItems;// = new HashSet<OrderItems>();;
 
 
 //	@ManyToMany(//mappedBy = "products"

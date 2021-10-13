@@ -92,6 +92,7 @@ public class Main {
 //        join Product p on p.id = ps.product_id
 //        group by o.id
 
+        //prodRepo.deleteById(1L);
 
 
 		log.info("demo2: Ok");

@@ -5,15 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -100,10 +93,13 @@ public class Order extends BaseEntity
 
 
 
-	@OneToMany(//mappedBy = "orderId"
+	@OneToMany(mappedBy = "order"
 			//fetch = FetchType.LAZY
 	)
-	@JoinColumn(name = "order_id", referencedColumnName = "id")
+//	@JoinColumn(
+//			name = "order_id"
+//			, referencedColumnName = "id"
+//	)
 //	@JoinColumn(name = "order_id2", referencedColumnName = "userId")
 
 //	@JoinColumns({
@@ -114,7 +110,7 @@ public class Order extends BaseEntity
 //			,joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")}
 ////			,inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
 //	)
-	private List<OrderItems> products1;
+	private List<OrderItems> orderItems;
 
 
 //	@ManyToMany(//mappedBy = "orders"
