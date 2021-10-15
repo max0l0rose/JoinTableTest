@@ -23,9 +23,12 @@ public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    @Autowired
-    static OrdersRepo ordersRepo1;
+//    @Autowired
+//    OrdersRepo ordersRepo;
 
+
+//    @Autowired
+//    OrderItemsRepo orderItemsRepo;
 
     @Bean
     @Transactional(
@@ -34,53 +37,60 @@ public class Main {
     )
     public boolean demo1(ProdRepo prodRepo,
                         OrdersService ordersService
-            , EntityManager entityManager
+            //, EntityManager entityManager
     ) {
         //return (args) ->
         //{
         log.info("demo1: ");
 
-        prodRepo.save(prod2);
+        Product prod1 = new Product("ProdA", 100, ProdStatus.IN_STOCK);
+        //prodRepo.save(prod1);
+        Product prod2 = new Product("ProdB", 200, ProdStatus.IN_STOCK);
+//        prodRepo.save(prod2);
 
-//        GeneralSequenceNumber n = new GeneralSequenceNumber();
-//        entityManager.persist(n);
-////        GeneralSequenceNumber n2 = new GeneralSequenceNumber();
-////        entityManager.persist(n2);
+        prodRepo.flush();
 
         Order order = new Order(ProdStatus.IN_STOCK);
+        //order.getProducts().add(new OrderItems(prod2, order, 10));
+        order.addProduct(prod1, 10);
+        order.addProduct(prod2, 20);
         ordersService.save(order);
 
-        Product prod1 = new Product("Prod1", 100, ProdStatus.IN_STOCK);
-        prodRepo.save(prod1);
+        ordersService.getOrdersRepo().flush();
 
-        OrderItems orderItems = new OrderItems(prod1, order, 10);
-        entityManager.persist(orderItems);
-        OrderItems orderItems2 = new OrderItems(prod2, order, 20);
-        entityManager.persist(orderItems2);
+////        OrderItems orderItems = new OrderItems(prod1, order, 10);
+////        orderItemsRepo.save(orderItems);
+//
+//        order.getProducts().add(new OrderItems(prod1, order, 20));
+//
+//        //entityManager.persist(orderItems);
+////        OrderItems orderItems2 = new OrderItems(prod2, order, 20);
+////        orderItemsRepo.save(orderItems2);
+////        //entityManager.persist(orderItems2);
 
         Order order2 = new Order(ProdStatus.IN_STOCK);
         ordersService.save(order2);
+        //order2.getProducts().add(new OrderItems(prod2, order2, 30));
+        order2.addProduct(prod2, 50);
 
         ordersService.save(new Order());
 
-        OrderItems orderItems21 = new OrderItems(prod2, order2, 50);
-        entityManager.persist(orderItems21);
+        ordersService.getOrdersRepo().flush();
 
-        ordersService.save(new Order());
+//        OrderItems orderItems21 = new OrderItems(prod2, order2, 50);
+//        orderItemsRepo.save(orderItems21);
+//        //entityManager.persist(orderItems21);
 
         log.info("demo1: Ok");
         return true;
     }
 
-
-    Product prod2 = new Product("Prod2", 200, ProdStatus.IN_STOCK);
-
     //CommandLineRunner
     @Bean
     @Transactional()
-    public boolean demo2(ProdRepo prodRepo,
-                        OrdersService ordersService
-                        , EntityManager entityManager
+    public boolean demo2(ProdRepo prodRepo
+                        //,OrdersService ordersService
+                        //, EntityManager entityManager
     ) {
         //return (args) ->
         //{
@@ -92,7 +102,7 @@ public class Main {
 //        join Product p on p.id = ps.product_id
 //        group by o.id
 
-        //prodRepo.deleteById(1L);
+        prodRepo.deleteById(1L);
 
 
 		log.info("demo2: Ok");
@@ -103,9 +113,7 @@ public class Main {
 
     public static void main(String[] args) {
         log.info("main: ----------------------------");
-
         SpringApplication.run(Main.class, args);
-
         log.info("main: ===========================!");
     }
 

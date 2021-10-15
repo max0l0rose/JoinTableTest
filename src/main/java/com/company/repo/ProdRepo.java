@@ -1,13 +1,14 @@
 package com.company.repo;
 
 import com.company.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
 //@Lazy
 public interface ProdRepo extends //Repository<User, Long>
-									CrudRepository<Product, Long>
+		                                  JpaRepository<Product, Long>
 {
 //	List<Product> findByName(String name);
 //

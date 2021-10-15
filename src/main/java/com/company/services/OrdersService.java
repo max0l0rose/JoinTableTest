@@ -5,6 +5,7 @@ import com.company.model.Order;
 import com.company.repo.GeneralSequenceNumberRepo;
 import com.company.repo.OrdersRepo;
 import com.sun.org.apache.xml.internal.serialize.LineSeparator;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Getter
 public class OrdersService implements MyService<Order>{
 
 	//@Autowired

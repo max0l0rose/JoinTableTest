@@ -1,13 +1,14 @@
 package com.company.repo;
 
 import com.company.model.Order;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 //import org.springframework.data.repository.PagingAndSortingRepository;
 
 
 //@Lazy
 public interface OrdersRepo extends
-		CrudRepository<Order, Long>
+		JpaRepository<Order, Long>
 					//PagingAndSortingRepository<Order, Long>
 {
 	//List<OrdersView> findById(String uname);

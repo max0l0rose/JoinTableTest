@@ -7,8 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @EntityListeners(AuditTrailListener.class)
@@ -94,6 +93,7 @@ public class Order extends BaseEntity
 
 
 	@OneToMany(mappedBy = "order"
+			, cascade = CascadeType.ALL, orphanRemoval = true
 			//fetch = FetchType.LAZY
 	)
 //	@JoinColumn(
@@ -110,7 +110,12 @@ public class Order extends BaseEntity
 //			,joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")}
 ////			,inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
 //	)
-	private List<OrderItems> orderItems;
+	private Set<OrderItems> products = new HashSet<>();
+
+
+	public void addProduct(Product product, int quantity) {
+		products.add(new OrderItems(product, this, quantity));
+	}
 
 
 //	@ManyToMany(//mappedBy = "orders"

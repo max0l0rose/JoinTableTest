@@ -27,31 +27,44 @@ public class OrderItems
 		this.quantity = quantity;
 	}
 
-	@Column(name = "product_id", insertable = false, updatable = false)
-	@Id
-	private long productId;
-
-	@Column(name = "order_id", insertable = false, updatable = false)
-	@Id
-	private long orderId;
+//	//@Column(name = "product_id", insertable = false, updatable = false)
+//	private long productId;
+//
+//	//@Column(name = "order_id", insertable = false, updatable = false)
+//	private long orderId;
 
 	@ManyToOne // generates FIELDNAME_id fkey
-	//@JoinColumn(name = "product1_id", referencedColumnName = "id", nullable = false)
-	//@Id
+	@JoinColumn(name = "productId1"
+			//, referencedColumnName = "id"
+	)
+	@Id
 	//@MapsId("product1")
-	@PrimaryKeyJoinColumn(name = "productId", referencedColumnName = "id")
+	//@PrimaryKeyJoinColumn(name = "productId", referencedColumnName = "id")
 	private Product product;
 
-	@ManyToOne
-	//@JoinColumn(name = "order1_id", referencedColumnName = "id", nullable = false)
-	@PrimaryKeyJoinColumn(name = "orderId", referencedColumnName = "id")
-	//@Id
+	@ManyToOne()
+	@JoinColumn(name = "orderId1"
+			//, referencedColumnName = "id"
+	)
+	//@PrimaryKeyJoinColumn(name = "orderId", referencedColumnName = "id")
+	@Id
 	//@MapsId("order1")
 	private Order order;
+
 
 	@Basic
 	//@Column(name = "quantity")
 	private int quantity;
+
+
+	@Override
+	public String toString() {
+		return "OrderItems{" +
+				       "product=" + product.getId() +
+				       ", order=" + order.getId() +
+				       ", quantity=" + quantity +
+				       '}';
+	}
 
 
 //	//@Override

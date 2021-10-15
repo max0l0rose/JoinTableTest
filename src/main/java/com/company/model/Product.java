@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -48,6 +50,7 @@ public class Product extends BaseEntity //implements StringsArray
 
 
 	@OneToMany(mappedBy = "product"
+			, cascade = CascadeType.ALL, orphanRemoval = true
 			//fetch = FetchType.LAZY
 	)
 	//@JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -55,7 +58,7 @@ public class Product extends BaseEntity //implements StringsArray
 //			joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
 //			inverseJoinColumns = {@JoinColumn(name = "product_id", referencedColumnName = "id")}
 //	)
-	private List<OrderItems> orderItems;// = new HashSet<OrderItems>();;
+	private Set<OrderItems> orders = new HashSet<>();
 
 
 //	@ManyToMany(//mappedBy = "products"
