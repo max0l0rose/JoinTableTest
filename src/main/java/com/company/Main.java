@@ -48,7 +48,9 @@ public class Main {
         Product prod2 = new Product("ProdB", 200, ProdStatus.IN_STOCK);
 //        prodRepo.save(prod2);
 
-        prodRepo.flush();
+//        Class c1 = ((BaseEntity)prod1).getClass();
+//        Class c2 = prod2.getClass();
+        //prodRepo.flush();
 
         Order order = new Order(ProdStatus.IN_STOCK);
         //order.getProducts().add(new OrderItems(prod2, order, 10));
@@ -56,7 +58,7 @@ public class Main {
         order.addProduct(prod2, 20);
         ordersService.save(order);
 
-        ordersService.getOrdersRepo().flush();
+        //ordersService.getOrdersRepo().flush();
 
 ////        OrderItems orderItems = new OrderItems(prod1, order, 10);
 ////        orderItemsRepo.save(orderItems);
@@ -75,7 +77,7 @@ public class Main {
 
         ordersService.save(new Order());
 
-        ordersService.getOrdersRepo().flush();
+        //ordersService.getOrdersRepo().flush();
 
 //        OrderItems orderItems21 = new OrderItems(prod2, order2, 50);
 //        orderItemsRepo.save(orderItems21);

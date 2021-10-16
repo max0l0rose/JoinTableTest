@@ -1,8 +1,6 @@
 package com.company.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -11,11 +9,12 @@ import java.util.*;
 
 @Entity
 @EntityListeners(AuditTrailListener.class)
-@Data
+//@Data
+@Getter
+@Setter
+//@EqualsAndHashCode(callSuper = true)
 //@AllArgsConstructor
 @NoArgsConstructor
-//@Getter
-//@Setter
 @SequenceGenerator(name = "sequenceGen", sequenceName = "seqOrders", allocationSize = 1)
 //@TableGenerator(name="DepTableGen",
 //		table = "sequences",
@@ -99,7 +98,7 @@ public class Order extends BaseEntity
 //	@JoinColumn(
 //			name = "order_id"
 //			, referencedColumnName = "id"
-//	)
+// 	)
 //	@JoinColumn(name = "order_id2", referencedColumnName = "userId")
 
 //	@JoinColumns({
@@ -146,19 +145,20 @@ public class Order extends BaseEntity
 //				       '}';
 //	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Order order1 = (Order) o;
-		return id == order1.id && Objects.equals(status, order1.status);
-				//&& status == order1.status;
-	}
+//	@Override
+//	public boolean equals(Object o) {
+//		if (this == o) return true;
+//		if (o == null || getClass() != o.getClass()) return false;
+//		Order order1 = (Order) o;
+//		return id == order1.id; //&& Objects.equals(status, order1.status);
+//				//&& status == order1.status;
+//	}
+//
+//	@Override
+//	public int hashCode() {
+//		return Objects.hash(id);//, status);
+//	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id, status);
-	}
 
 }
 

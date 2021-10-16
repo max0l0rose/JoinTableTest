@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
 
 //@Entity // ERROR
 //@Inheritance(strategy = InheritanceType.JOINED)
@@ -56,4 +57,24 @@ public abstract class BaseEntity //implements StringsArray
 
 //	@Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 //	OffsetDateTime created_offsetDT;
+
+
+//	@Override
+//	public boolean equals(Object o) {
+//		if (this == o)
+//			return true;
+//		System.out.println("---------------------------equals: " + getClass() + ", " +  o.getClass() + ";");
+//		if (o == null || getClass() != o.getClass())
+//			return false;
+//		T o2 = (T) o;
+//		return id == o2.id; //&& Objects.equals(status, order1.status);
+//		//&& status == order1.status;
+//	}
+//
+//	@Override
+//	public int hashCode() {
+//		//String a = getClass().getName() + id;
+//		return Objects.hash(id);//, status);
+//	}
+
 }

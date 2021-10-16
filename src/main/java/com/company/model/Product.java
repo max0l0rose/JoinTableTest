@@ -1,20 +1,20 @@
 package com.company.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
+@Getter
+@Setter
 //@AllArgsConstructor
 @NoArgsConstructor
-//@Getter
-//@Setter
 @SequenceGenerator(name = "sequenceGen", sequenceName = "seqProduct", allocationSize = 1, initialValue = 1)
 @Table(name = "Products")
 public class Product extends BaseEntity //implements StringsArray
@@ -81,12 +81,29 @@ public class Product extends BaseEntity //implements StringsArray
 //		return new String[] {String.valueOf(id), String.valueOf(username), String.valueOf(department), String.valueOf(created), String.valueOf(modified)};
 //	}
 
-	@Override
-	public String toString() {
-		return "Product{" +
-				       "name='" + name + '\'' +
-				       ", price=" + price +
-				       ", status=" + status +
-				       '}';
-	}
+//	@Override
+//	public String toString() {
+//		return "Product{" +
+//				       "name='" + name + '\'' +
+//				       ", price=" + price +
+//				       ", status=" + status +
+//				       '}';
+//	}
+
+
+//	@Override
+//	public boolean equals(Object o) {
+//		if (this == o) return true;
+//		if (o == null || getClass() != o.getClass()) return false;
+//		Product product1 = (Product) o;
+//		return id == product1.id; //&& Objects.equals(status, order1.status);
+//		//&& status == order1.status;
+//	}
+//
+//	@Override
+//	public int hashCode() {
+//		return Objects.hash(id);//, status);
+//	}
+
+
 }
