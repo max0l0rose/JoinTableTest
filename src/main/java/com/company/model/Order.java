@@ -92,7 +92,7 @@ public class Order extends BaseEntity
 
 
 	@OneToMany(mappedBy = "order"
-			, cascade = CascadeType.ALL, orphanRemoval = true
+			, cascade = CascadeType.ALL//, orphanRemoval = true
 			//fetch = FetchType.LAZY
 	)
 //	@JoinColumn(

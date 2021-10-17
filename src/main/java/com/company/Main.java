@@ -104,7 +104,11 @@ public class Main {
 //        join Product p on p.id = ps.product_id
 //        group by o.id
 
-        prodRepo.deleteById(1L);
+        prodRepo.deleteById(2L);
+        prodRepo.flush();
+
+        Product product = prodRepo.findById(1L).get();
+        product.getOrders().clear();
 
 
 		log.info("demo2: Ok");

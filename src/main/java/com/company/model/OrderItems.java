@@ -42,7 +42,7 @@ public class OrderItems
 	//@PrimaryKeyJoinColumn(name = "productId", referencedColumnName = "id")
 	private Product product;
 
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "orderId1"
 			//, referencedColumnName = "id"
 	)
